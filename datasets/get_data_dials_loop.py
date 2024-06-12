@@ -12,7 +12,6 @@ import argparse
 # local imports
 sys.path.append(os.path.abspath('../'))
 import jobsubmission.condortools as ct
-CMSSW = os.path.abspath('../../CMSSW_14_0_4')
 
 
 if __name__=='__main__':
@@ -45,6 +44,8 @@ if __name__=='__main__':
         +' Note: lines with regex-expressions will be resubmitted regardless.')
   parser.add_argument('--runmode', default='local', choices=['local', 'condor'],
     help='Run directly in terminal ("local") or in HTCondor job ("condor").')
+  parser.add_argument('--cmssw', default=None,
+    help='Path to CMSSW installation for loading software environment in job.')
   parser.add_argument('--test', default=False, action='store_true',
     help='Truncate loop and data for small and quick tests.')
   args = parser.parse_args()
@@ -135,7 +136,7 @@ if __name__=='__main__':
   # run or submit commands
   if args.runmode=='condor':
     ct.submitCommandsAsCondorCluster('cjob_get_data', cmds,
-      cmssw_version=CMSSW, home='auto')
+      cmssw_version=args.cmssw, home='auto')
   else:
     for cmd in cmds:
       print(cmd)

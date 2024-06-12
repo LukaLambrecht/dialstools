@@ -25,6 +25,10 @@ If everything goes well, one `parquet` file per ME and per dataset will be creat
 It is advised to always try first running locally (i.e. not in job submission) on a single dataset and for a single ME, to see if everything runs fine.
 You can also add the option `--test` to truncate the data and make the test run much faster.
 
+### CMSSW version
+For job submission, you additionally need to pass the `--cmssw` argument with a path to a CMSSW installation, for loading a basic software environment on the worker node.
+The exact CMSSW version shouldn't matter much, as long as it is recent enough.
+
 ### Authentication
 Authentication happens interactively through a device authentication flow.
 See [the dials-py documentation](https://github.com/cms-DQM/dials-py/tree/develop?tab=readme-ov-file#usage) for more information.

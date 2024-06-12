@@ -23,7 +23,6 @@ from cmsdials.filters import RunFilters
 # local imports
 sys.path.append(os.path.abspath('../'))
 import jobsubmission.condortools as ct
-CMSSW = os.path.abspath('../../CMSSW_14_0_4')
 
 
 def get_creds(max_attempts=5):
@@ -105,6 +104,8 @@ if __name__=='__main__':
         +' Note: lines with regex-expressions will be used regardless.')
   parser.add_argument('--runmode', default='local', choices=['local', 'condor'],
     help='Run directly in terminal ("local") or in HTCondor job ("condor").')
+  parser.add_argument('--cmssw', default=None,
+    help='Path to CMSSW installation for loading software environment in job.')
   parser.add_argument('--test', default=False, action='store_true',
     help='Truncate data for small and quick tests.')
   args = parser.parse_args()
@@ -125,7 +126,7 @@ if __name__=='__main__':
     if args.test: cmd += ' --test'
     cmd += ' --runmode local'
     ct.submitCommandAsCondorJob('cjob_get_data', cmd,
-      cmssw_version=CMSSW, home='auto')
+      cmssw_version=args.cmssw, home='auto')
     sys.exit()
 
   # print starting tag (for job completion checking)
