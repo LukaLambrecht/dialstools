@@ -17,11 +17,12 @@ Next, run `python3 get_data_dials_loop.py` with the following options:
 - `-t / --metype`: type of MEs (choose from "h1d" or "h2d"), needed for correct DIALS syntax. Note: --menames json files with mixed 1D and 2D MEs are not supported, they should be splitted and submitted separately.
 - `-w / --workspace`: DIALS-workspace, see [the documentation](https://github.com/cms-DQM/dials-py?tab=readme-ov-file#workspace), default is `tracker`.
 - `-o / --outputdir`: output directory.
-- `--splitdatasets`: split into separate jobs per dataset (Note: any regex-style wildcards are transfered verbatim to the DIALS API, and hence jobs are split before rather than after the expansion of these wildcards).
-- `--splitmes`: split into separate jobs per ME (Note: any regex-style wildcards are transfered verbatim to the DIALS API, and hence jobs are split before rather than after the expansion of these wildcards).
-- `--runmode`: choose from `local` (to run in terminal) or `condor` (to run in job)
+- `--splitdatasets`: split into separate jobs per dataset. Note: any regex-style wildcards are transfered verbatim to the DIALS API, and hence jobs are split before rather than after the expansion of these wildcards. In other words, there will be one job per line in the provided json file, which may map to one or multiple datasets using regex-style wildcards provided to the DIALS API.
+- `--splitmes`: split into separate jobs per ME (Note: any regex-style wildcards are transfered verbatim to the DIALS API, and hence jobs are split before rather than after the expansion of these wildcards). In other words, there will be one job per line in the provided json file, which may map to one or multiple MEs using regex-style wildcards provided to the DIALS API.
+- `--runmode`: choose from `local` (to run in terminal) or `condor` (to run in HTCondor job)
 
 If everything goes well, one `parquet` file per ME and per dataset will be created in the output directory, containing a `pandas` `DataFrame` with the requested monitoring elements.
+Note that the output files are always split per individual ME and dataset, even if multiple MEs and/or datasets were provided (using regex-style wildcards).
 It is advised to always try first running locally (i.e. not in job submission) on a single dataset and for a single ME, to see if everything runs fine.
 You can also add the option `--test` to truncate the data and make the test run much faster.
 
