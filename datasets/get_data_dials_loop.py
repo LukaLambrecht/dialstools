@@ -55,6 +55,9 @@ if __name__=='__main__':
   for arg in vars(args):
     print('  - {}: {}'.format(arg,getattr(args,arg)))
 
+  # check and parse CMSSW argument
+  if args.cmssw is not None: args.cmssw = os.path.abspath(args.cmssw)
+
   # make a list of datasets
   datasets = []
   with open(args.datasetnames, 'r') as f:
@@ -136,7 +139,8 @@ if __name__=='__main__':
   # run or submit commands
   if args.runmode=='condor':
     ct.submitCommandsAsCondorCluster('cjob_get_data', cmds,
-      cmssw_version=args.cmssw, home='auto')
+      cmssw_version=args.cmssw, home='auto',
+      jobflavour='workday')
   else:
     for cmd in cmds:
       print(cmd)

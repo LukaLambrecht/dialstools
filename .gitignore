@@ -4,3 +4,6 @@
 
 **.parquet
 **.gif
+
+datasets/temp_*
+**cjob_*
