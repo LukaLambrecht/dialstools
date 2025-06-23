@@ -52,8 +52,12 @@ if __name__=='__main__':
 
   # read arguments
   parser = argparse.ArgumentParser(description='Check available lumisections')
-  parser.add_argument('-d', '--datasets', required=True)
-  parser.add_argument('-p', '--parquetfiles', required=True, nargs='+')
+  parser.add_argument('-d', '--datasets', required=True, nargs='+',
+    help='Path to a json file containing a list of dataset names.'
+        +' Multiple files can be provided, in which case their contents are simply concatenated.')
+  parser.add_argument('-p', '--parquetfiles', required=True, nargs='+',
+    help='Paths to parquet files for which to check the available lumisections.'
+        +' The files are matched to the relevant dataset based on their conventional file name.')
   parser.add_argument('--print_missing', default=False, action='store_true')
   args = parser.parse_args()
   
@@ -67,8 +71,9 @@ if __name__=='__main__':
 
   # make a list of datasets
   datasets = []
-  with open(args.datasets, 'r') as f:
-    datasets = json.load(f)
+  for this_datasets in args.datasets:
+    with open(this_datasets, 'r') as f:
+      datasets += json.load(f)
 
   # find out which parquet files belong to which dataset
   dataset_files = {dataset.replace('-','').replace('/',''): [] for dataset in datasets}

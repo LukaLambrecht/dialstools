@@ -18,7 +18,8 @@ if __name__=='__main__':
 
   # read arguments
   parser = argparse.ArgumentParser(description='Check job status')
-  parser.add_argument('-i', '--inputfiles', required=True, nargs='+')
+  parser.add_argument('-i', '--inputfiles', required=True, nargs='+',
+           help='Paths to condor output files (*_out_*) to check.')
   args = parser.parse_args()
   
   # print arguments
