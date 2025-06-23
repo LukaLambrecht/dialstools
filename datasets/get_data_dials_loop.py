@@ -18,12 +18,14 @@ if __name__=='__main__':
 
   # read arguments
   parser = argparse.ArgumentParser(description='Get data')
-  parser.add_argument('-d', '--datasetnames', required=True,
-    help='Path to a json file containing a list of dataset names,'
-        +' may contain regex-style metacharacters or sets.')
-  parser.add_argument('-m', '--menames', required=True,
-    help='Path to a json file containing a list of monitoring elements,'
-        +' may contain regex-style metacharacters or sets.')
+  parser.add_argument('-d', '--datasetnames', required=True, nargs='+',
+    help='Path to a json file containing a list of dataset names.'
+        +' Multiple files can be provided, in which case their contents are simply concatenated.'
+        +' The dataset names may contain regex-style metacharacters or sets.')
+  parser.add_argument('-m', '--menames', required=True, nargs='+',
+    help='Path to a json file containing a list of monitoring elements.'
+        +' Multiple files can be provided, in which case their contents are simply concatenated.'
+        +' The monitoring element names may contain regex-style metacharacters or sets.')
   parser.add_argument('-t', '--metype', required=True, choices=['h1d', 'h2d'],
     help='Type of MEs (choose from "h1d" or "h2d"), needed for correct DIALS syntax.'
         +' Note: --menames json files with mixed 1D and 2D MEs are not supported,'
@@ -60,13 +62,15 @@ if __name__=='__main__':
 
   # make a list of datasets
   datasets = []
-  with open(args.datasetnames, 'r') as f:
-    datasets = json.load(f)
+  for this_datasetnames in args.datasetnames:
+    with open(this_datasetnames, 'r') as f:
+      datasets += json.load(f)
 
   # make a list of monitoring elements
   menames = []
-  with open(args.menames, 'r') as f:
-    menames = json.load(f)
+  for this_menames in args.menames:
+    with open(this_menames, 'r') as f:
+      menames += json.load(f)
 
   # handle splitting per dataset
   datasetfiles = [args.datasetnames]
