@@ -179,7 +179,7 @@ if __name__=='__main__':
       # check if output file already exists and if so, skip this part
       # (if requested)
       if args.resubmit:
-        outputfile = (dataset+'-'+me).strip('/').replace('/','-')+'.parquet'
+        outputfile = (dataset+'-'+me).strip('/').replace('/','-').replace(' ', '_')+'.parquet'
         outputfile = outputfile.replace('\\','')
         outputfile = os.path.join(args.outputdir, outputfile)
         if os.path.exists(outputfile):
